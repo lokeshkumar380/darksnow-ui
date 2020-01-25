@@ -4,7 +4,7 @@ import RaisedButton from "material-ui/RaisedButton";
 import Login from "./Login.js";
 import Register from "./Register.js";
 import AppBar from "material-ui/AppBar";
-//import { text } from "@material/react-typography";
+import { text } from "@material/react-typography";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -59,7 +59,7 @@ class LoginScreen extends Component {
       <div className="loginscreen">
         {this.state.loginscreen}
         <div>
-          {/* <AppBar>{this.state.loginmessage}</AppBar> */}
+          <text>this.state.loginmessage</text>
           <MuiThemeProvider>
             <div>
               <RaisedButton
