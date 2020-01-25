@@ -1,0 +1,12 @@
+.Catalouge_container{
+    padding-right: 35px;
+    padding-left: 35px;
+}
+.catalouge_centered{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color:yellow;
+    transform: translate(-50%, -50%);
+
+}
