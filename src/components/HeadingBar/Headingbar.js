@@ -8,8 +8,10 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import HeartIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import LoginScreen from "../UserValidation/LoginScreen.js";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import LoginDialog from "../UserValidation/LoginDialog";
+import SignUpDialog from "../UserValidation/SignUpDialog";
+import { Grid } from "@material-ui/core";
 
 const useStyles = theme => ({
   menuButton: {
@@ -30,16 +32,25 @@ class Headingbar extends Component {
     super(props);
 
     this.state = {
-      loginbutton: false
+      loginbutton: false,
+      logobutton: false
     };
 
     this.onLoginClicked = this.onLoginClicked.bind(this);
+    this.onLogoClicked = this.onLogoClicked.bind(this);
   }
   onLoginClicked() {
     var loginbutton = true;
 
     this.setState({
       loginbutton: loginbutton
+    });
+  }
+  onLogoClicked() {
+    var logobutton = true;
+
+    this.setState({
+      logobutton: logobutton
     });
   }
   render() {
@@ -54,14 +65,15 @@ class Headingbar extends Component {
           >
             <MenuIcon />
           </IconButton>
-          <Button color="inherit">
-            <Typography>Dark Snow</Typography>
+          <Button color="inherit" onClick={this.onLogoClicked}>
+            Dark Snow
           </Button>
+          <Grid item>
+            <LoginDialog />
+          </Grid>
+          <SignUpDialog />
+
           <span className={classes.toolbarButtons}>
-            <Button color="inherit" onClick={this.onLoginClicked}>
-              Login
-            </Button>
-            {this.state.loginbutton ? <LoginScreen /> : null}
             <Button color="inherit">
               <Typography>Contact Us</Typography>
             </Button>

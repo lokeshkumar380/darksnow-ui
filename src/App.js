@@ -4,11 +4,10 @@ import Headingbar from "./components/HeadingBar/Headingbar.js";
 import ImageText from "./components/ImageText/ImageText.js";
 import Catalouge from "./components/Catalouge/Catalouge.js";
 import "./App.css";
-import LoginScreen from "./components/UserValidation/LoginScreen.js";
 class App extends React.Component {
   render() {
     return (
-      <div class="main container">
+      <div class="maincontainer">
         <div class="row" style={{ height: "68px" }}>
           <Headingbar />
         </div>
@@ -20,9 +19,6 @@ class App extends React.Component {
         </div>
         <div class="row">
           <Catalouge />
-        </div>
-        <div class="row">
-          <LoginScreen />
         </div>
       </div>
     );
