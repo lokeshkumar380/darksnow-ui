@@ -30,6 +30,7 @@ const useStyles = theme => ({
 class Headingbar extends Component {
   constructor(props) {
     super(props);
+    console.info(this.props);
 
     this.state = {
       loginbutton: false,
@@ -69,7 +70,7 @@ class Headingbar extends Component {
             Dark Snow
           </Button>
           <Grid item>
-            <LoginDialog />
+            <LoginDialog onAuthSet={this.setAuth} />
           </Grid>
           <SignUpDialog />
 

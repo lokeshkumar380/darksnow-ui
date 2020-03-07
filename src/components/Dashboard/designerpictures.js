@@ -7,9 +7,8 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import IconButton from "@material-ui/core/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import Checkboxes from "./checkbox";
-import ButtonLink from "./link"
-
-//import tileData from "./tileData";
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,66 +24,52 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     color: "rgba(255, 255, 255, 0.54)"
+  },
+  control: {
+    padding: theme.spacing(8)
   }
 }));
 
-/**
- * The example data is structured as follows:
- *
- * import image from 'path/to/image.jpg';
- * [etc...]
- *
- * const tileData = [
- *   {
- *     img: image,
- *     title: 'Image',
- *     author: 'author',
- *   },
- *   {
- *     [etc...]
- *   },
- * ];
- */
-
 const tileData = [
   {
-    img:
+    url:
       "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg",
     title: "Bird",
     author: "authorone"
   },
   {
-    img:
-      "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg",
+    url:
+      "https://images.bewakoof.com/uploads/grid/app/underslider-desk-1578655850.gif",
     title: "Bird",
     author: "author2"
   },
   {
-    img:
-      "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg",
+    url:
+      "https://images.bewakoof.com/uploads/grid/app/decade-desktop-1578548230.jpg",
     title: "Bird",
     author: "author3"
   },
   {
-    img:
+    url:
       "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg",
     title: "Bird",
     author: "author4"
   },
   {
-    img:
+    url:
       "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg",
     title: "Bird",
     author: "author5"
   },
   {
-    img:
+    url:
       "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg",
     title: "Bird",
     author: "author6"
   }
 ];
-export default function TitlebarGridList() {
+export default function TitlebarGridList(props) {
+  const [spacing, setSpacing] = React.useState(5);
   const classes = useStyles();
 
   return (
@@ -94,10 +79,8 @@ export default function TitlebarGridList() {
           <ListSubheader component="div">Latest Designs</ListSubheader>
         </GridListTile>
         {tileData.map(tile => (
-          
-          <GridListTile key={tile.author}>
-            <img src={tile.img} alt={tile.title} />
-            
+          <GridListTile key={tile.author} spacing={spacing}>
+            <img src={tile.url} alt={tile.title}></img>
             <GridListTileBar
               title={tile.title}
               subtitle={<span>by: {tile.author}</span>}
@@ -106,9 +89,13 @@ export default function TitlebarGridList() {
                   aria-label={`info about ${tile.title}`}
                   className={classes.icon}
                 >
-                  <InfoIcon />
-                  <Checkboxes />
-                  <ButtonLink image="tile.img"/>
+                  <Checkboxes
+                    value={tile}
+                    onSelectImage={props.onSelectImage}
+                  />
+                  <Link href={tile.url}>
+                    <InfoIcon />
+                  </Link>
                 </IconButton>
               }
             />

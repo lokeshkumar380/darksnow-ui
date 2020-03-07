@@ -6,6 +6,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { Form, Label } from "reactstrap";
 import { FormGroup, Input } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+// import Dashboard from "../Dashboard/dashboard";
+import { HashRouter, Router, Link } from "react-router-dom";
+import { fakeAuth } from "../../App";
+import { Redirect } from "react-router-dom";
+import DesignerService from "../service";
 
 const useStyles = theme => ({
   dialogCustomizedWidth: {
@@ -13,19 +18,29 @@ const useStyles = theme => ({
   }
 });
 
+const designerObject = {
+  designer_id: String,
+  password: String,
+  mobile_no: 0,
+  first_name: "",
+  last_name: ""
+};
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
+    this.designerService = new DesignerService();
 
     this.state = {
+      dashboard: false,
       open: false,
-      id: "",
-      password: ""
+      redirectToReferrer: false,
+      redirect: null
     };
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleUserInput = this.handleUserInput.bind(this);
+    //this.handleUserInput = this.handleUserInput.bind(this);
     this.validate = this.validate.bind(this);
   }
   handleClose() {
@@ -36,80 +51,96 @@ class Login extends React.Component {
     });
   }
   handleClickOpen() {
+    console.info("handlce cliock open");
     var open = true;
 
     this.setState({
       open: open
     });
   }
-  handleUserInput(e) {
-    this.setState({
-      id: e.target.value,
-      password: e.target.value
-    });
+  userId(e) {
+    designerObject.designer_id = e.target.value;
+  }
+  password(e) {
+    designerObject.password = e.target.value;
   }
 
-  validate(event) {
-    console.log("hye = " + this.state.password);
-    event.preventDefault();
+  test() {
+    this.setState({ redirect: "/admin" });
+  }
+
+  validate(e) {
+    e.preventDefault();
+    this.designerService.designer_login(designerObject).then(response => {
+      if (response === "login successful") {
+        console.info(response);
+        this.setState({ redirect: "/admin" });
+      } else this.setState({ redirect: "/" });
+    });
   }
   render() {
     const { classes } = this.props;
-    return (
-      <div>
-        <Button color="inherit" onClick={this.handleClickOpen}>
-          Login
-        </Button>
-        <Dialog
-          classes={{ paperFullWidth: classes.dialogCustomizedWidth }}
-          open={this.state.open}
-          onClose={this.handleClose}
-        >
-          <DialogContent>
-            <Form style={{ textAlign: "center" }}>
-              <h2>Login</h2>
-              <br />
-              <FormGroup>
-                <Input
-                  type="text"
-                  placeholder="Designer Id"
-                  // value={this.state.id}
-                  onChange={event => this.handleUserInput(event)}
-                />
-              </FormGroup>
-              <br />
-              <FormGroup>
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  // value={this.state.password}
-                  onChange={event => this.handleUserInput(event)}
-                />
-              </FormGroup>
-              <br />
-              <br />
-              <button
-                style={{
-                  backgroundColor: "yellowgreen",
-                  width: "100%",
-                  height: "42px",
-                  fontSize: "16px"
-                }}
-                type="submit"
-                onClick={event => this.validate(event)}
-              >
-                Log In
-              </button>
-            </Form>
-          </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={this.handleClose} color="inherit">
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    );
+    if (this.state.redirect) {
+      console.info(this.state.redirect + "hello");
+      return <Redirect to={this.state.redirect} />;
+    } else {
+      return (
+        <div>
+          <Button color="inherit" onClick={this.handleClickOpen}>
+            Login
+          </Button>
+          <Dialog
+            classes={{ paperFullWidth: classes.dialogCustomizedWidth }}
+            open={this.state.open}
+            onClose={this.handleClose}
+          >
+            <DialogContent>
+              <Form style={{ textAlign: "center" }}>
+                <h2>Login</h2>
+                <br />
+                <FormGroup>
+                  <Input
+                    type="text"
+                    placeholder="Designer Id"
+                    // value={this.state.id}
+                    onChange={event => this.userId(event)}
+                  />
+                </FormGroup>
+                <br />
+                <FormGroup>
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    // value={this.state.password}
+                    onChange={event => this.password(event)}
+                  />
+                </FormGroup>
+                <br />
+                <br />
+                <button
+                  style={{
+                    backgroundColor: "yellowgreen",
+                    width: "100%",
+                    height: "42px",
+                    fontSize: "16px"
+                  }}
+                  type="submit"
+                  onClick={event => this.validate(event)}
+                >
+                  Log In
+                </button>
+              </Form>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={this.handleClose} color="inherit">
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+          {/* {this.state.dashboard ? <Dashboard /> : null} */}
+        </div>
+      );
+    }
   }
 }
 export default withStyles(useStyles)(Login);

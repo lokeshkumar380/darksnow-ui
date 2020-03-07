@@ -5,16 +5,32 @@ import ImageText from "./components/ImageText/ImageText.js";
 import Catalouge from "./components/Catalouge/Catalouge.js";
 import "./App.css";
 import Dashboard from "./components/Dashboard/dashboard.js";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute/private_router";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
+//import NotFound from "./components/Dashboard/not_found";
 class App extends React.Component {
+  state = {
+    auth: false,
+    setAuth: ""
+  };
+
+  setAuth = value => {
+    this.setState({ auth: value });
+  };
+
   render() {
     return (
       <div class="maincontainer">
         <Router>
           <Switch>
-            <Route path="/home" component={App}>
+            <Route exact path="/" component={App}>
               <div className="row" style={{ height: "68px" }}>
-                <Headingbar />
+                <Headingbar onAuthSet={this.setAuth} />
               </div>
               <div className="row">
                 <SliderComponent />
@@ -26,14 +42,27 @@ class App extends React.Component {
                 <Catalouge />
               </div>
             </Route>
-            <Route path="/admin" component={Dashboard}>
-              <Dashboard />
-            </Route>
+
+            <PrivateRoute
+              exact
+              path="/admin"
+              component={Dashboard}
+              auth={this.state.auth}
+            />
+            <Route component={NotFound}></Route>
           </Switch>
         </Router>
       </div>
     );
   }
+}
+
+function NotFound() {
+  return (
+    <div>
+      <h1>Page Not Found 404</h1>
+    </div>
+  );
 }
 
 export default App;
